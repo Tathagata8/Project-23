@@ -1,5 +1,6 @@
 var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
 var packageBody,ground, wall1, wall2, wall3;
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
@@ -14,7 +15,8 @@ function preload()
 
 function setup() {
 	createCanvas(800, 700);
-	rectMode(CENTER);
+	
+	
 	
    packageSprite=createSprite(width/2, 80, 10,10);
 	packageSprite.addImage(packageIMG);
@@ -28,24 +30,36 @@ function setup() {
 	groundSprite=createSprite(width/2, height-35, width,10);
 	groundSprite.shapeColor=color(255);
 
-	wall1= createCanvas(width/2, height-30,200,20);
-	wall1.shapeColor("red");
-	
-	wall2= createSprite(510,610,20,100);
-	wall2.shapeColor("red");
-
-	wall3 = createSprite(310,610,20,100);
-	wall3.shapeColor("red");
-
 	engine = Engine.create();
 	world = engine.world;
 
-	
+	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.4, isStatic:true}); 
+	World.add(world, packageBody);
 
 	//Create a Ground
 	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
  	World.add(world, ground);
 
+	boxposition = width/2 - 100;
+	boxY = 610;
+	
+	boxLeftSprite = createSprite(boxposition,boxY,20,100);
+	boxLeftBody = Bodies.rectangle(boxposition+ 20, boxY,20,100, {isStatic: true});
+	World.add(world,boxLeftBody);
+	
+	boxRightSprite = createSprite(boxposition + 200,boxY,20,100);
+	boxRightBody = Bodies.rectangle(boxposition+ 200 - 20, boxY,20,100, {isStatic: true});
+	World.add(world,boxRightBody);
+	
+	boxBase = createSprite(boxposition+100, boxY+40, 200, 20);
+	boxBaseBody = Bodies.rectangle(boxposition+ 100 - 20, boxY+45 - 20,200,20, {isStatic: true});
+	World.add(world,boxBaseBody);
+
+
+	
+	
+
+	
 
 	Engine.run(engine);
   
@@ -53,7 +67,6 @@ function setup() {
 
 
 function draw() {
-	rectMode(CENTER);
 	background(0);
 
 	
@@ -61,12 +74,11 @@ function draw() {
 	packageSprite.y= packageBody.position.y ;
 	
 
-packageSprite.collide(wll1);
-packageSprite.collide(wall2);
-packageSprite.collide(wall3);
+	
 
   drawSprites();
  
+
 }
 
 function keyPressed() {
